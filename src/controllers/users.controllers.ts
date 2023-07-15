@@ -1,6 +1,8 @@
 import databaseService from '~/services/database.services'
 import { Request, Response } from 'express'
 import usersService from '~/services/users.services'
+import { ParamsDictionary } from 'express-serve-static-core'
+import { RegisterRequestBody } from '~/models/request/User.request'
 
 export const loginController = async (req: Request, res: Response) => {
   const { email, password } = req.body
@@ -13,7 +15,6 @@ export const loginController = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
-    console.log(error)
     return res.status(400).json({
       message: 'Login failed',
       error
@@ -21,17 +22,14 @@ export const loginController = async (req: Request, res: Response) => {
   }
 }
 
-export const registerController = async (req: Request, res: Response) => {
-  const { email, password, name, date_of_birth } = req.body
+export const registerController = async (req: Request<ParamsDictionary, any, RegisterRequestBody>, res: Response) => {
   try {
-    const result: any = await usersService.register({ email, password, name, date_of_birth })
-    const newUser = await databaseService.users.findOne({ _id: result.insertedId })
+    const result = await usersService.register(req.body)
     return res.status(201).json({
       message: 'Register successful',
-      newUser
+      result
     })
   } catch (error) {
-    console.log(error)
     return res.status(400).json({
       message: 'Register failed',
       error
