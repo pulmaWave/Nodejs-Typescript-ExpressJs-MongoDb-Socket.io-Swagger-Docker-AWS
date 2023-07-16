@@ -57,7 +57,7 @@ class UsersService {
   async login(payload: { email: string; password: string }) {
     try {
       const { email, password } = payload
-      const result = await databaseService.users.findOne({ email, password })
+      const result = await databaseService.users.findOne({ email, password: hashPassword(password) })
       return result
     } catch (error) {
       return error
