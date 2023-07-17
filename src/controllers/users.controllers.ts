@@ -7,6 +7,11 @@ import { RegisterRequestBody } from '~/models/request/User.request'
 export const loginController = async (req: Request, res: Response) => {
   const { email, password } = req.body
   const result = await usersService.login({ email, password })
+  if (!result) {
+    return res.status(401).json({
+      error: 'Invalid email or password'
+    })
+  }
   return res.status(200).json({
     message: 'Login successful',
     result
