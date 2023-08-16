@@ -81,7 +81,7 @@ export default usersRouter
  * /users/login:
  *  post:
  *    tags: [Users]
- *    summary: Register a user
+ *    summary: Login
  *    requestBody:
  *      required: true
  *      content:
